@@ -5,225 +5,127 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CureAI - Cure Yourself Now!</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        /* Color Palette */
-        :root {
-            --bg-color: #fcf8f2;
-            --primary-color: #d65a55;
-            --primary-hover: #c44d48;
-            --text-color: #5d4e46;
-            --chat-bg: #ffffff;
-            --ai-msg-bg: #f4eee8;
-            --border-color: #e8ded4;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            overflow: hidden;
-        }
-        
-        /* Main Chat Container */
-        .chat-container {
-            width: 400px;
-            height: 90vh; 
-            max-height: 980px; 
-            min-height: 500px;
-            background: var(--chat-bg);
-            border-radius: 25px;
-            box-shadow: 0 15px 35px rgba(214, 90, 85, 0.15);
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid var(--border-color);
-        }
-
-        /* Header Section */
-        .header {
-            background-color: var(--primary-color);
-            color: white;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            box-shadow: 0 4px 15px rgba(214, 90, 85, 0.2);
-            flex-shrink: 0;
-        }
-
-        /* --- LOGO DÜZENLEMESİ BURADA YAPILDI --- */
-        .header-icon {
-            width: 50px;
-            height: 50px;
-            /* Padding'in toplam boyutu 50px'in üzerine çıkarmasını engeller */
-            box-sizing: border-box; 
-            /* Resmin satır içi eleman gibi davranıp kaymasını önler */
-            display: block;
-            
-            object-fit: contain;
-            background-color: white;
-            border-radius: 50%;
-            padding: 3px; /* Beyaz çerçeve ile logo arasındaki boşluğu biraz artırdım */
-        }
-        /* --------------------------------------- */
-
-        .header h2 { margin: 0; font-size: 22px; font-weight: 700; }
-        .header p { margin: 2px 0 0 0; font-size: 13px; opacity: 0.9; font-style: italic; }
-
-        /* Chat Area */
-        .chat-box {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
-            background-size: 20px 20px;
-        }
-
-        /* Messages */
-        .message {
-            max-width: 80%;
-            padding: 12px 16px;
-            border-radius: 18px;
-            font-size: 14px;
-            line-height: 1.5;
-            position: relative;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        .ai { background-color: var(--ai-msg-bg); color: var(--text-color); align-self: flex-start; border-bottom-left-radius: 2px; }
-        .user { background-color: var(--primary-color); color: white; align-self: flex-end; border-bottom-right-radius: 2px; box-shadow: 0 3px 10px rgba(214, 90, 85, 0.2); }
-
-        /* Input Area */
-        .input-area {
-            padding: 15px;
-            background: var(--chat-bg);
-            border-top: 1px solid var(--border-color);
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-shrink: 0;
-        }
-
-        input {
-            flex: 1;
-            padding: 12px 15px;
-            border: 2px solid var(--border-color);
-            border-radius: 25px;
-            outline: none;
-            transition: 0.3s;
-            color: var(--text-color);
-        }
-        input:focus { border-color: var(--primary-color); }
-
-        button {
-            width: 45px;
-            height: 45px;
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: 0.2s;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        button:hover { background-color: var(--primary-hover); transform: scale(1.1); }
-        button:disabled { background-color: #ccc; cursor: not-allowed; }
-
-        /* Clear Button */
-        #clear-btn { background-color: transparent; color: #fff; width: 30px; opacity: 0.8; box-shadow: none; }
-        #clear-btn:hover { color: #fff; opacity: 1; background-color: rgba(255,255,255,0.2); }
-
-        /* Disclaimer Footer */
-        .disclaimer { font-size: 10px; color: #aaa; text-align: center; padding: 8px; background-color: #fafafa; flex-shrink: 0; }
-        
-        /* Markdown Styling */
-        .ai b { color: var(--primary-color); }
-        .ai ul { padding-left: 20px; margin: 5px 0; }
-    </style>
+    <link rel="stylesheet" href="/assets/css/style.css">
 </head>
 <body>
 
-<div class="chat-container">
-    <div class="header">
-        <img src="/assets/logo.png" alt="CureAI Logo" class="header-icon">
-        <div>
-            <h2>CureAI</h2>
-            <p>Cure Yourself Now!</p>
-        </div>
-        <button id="clear-btn" onclick="clearChat()" title="Clear Chat" style="margin-left: auto;">
-            <i class="fas fa-trash-alt"></i>
-        </button>
-    </div>
-
-    <div class="chat-box" id="chat-box">
-        <div class="message ai">
-            <i class="fas fa-robot" style="color: var(--primary-color); margin-right:5px;"></i>
-            Hello! I am <b>CureAI</b>. How can I help you today?
+<div class="app-layout">
+    
+    <div class="side-panel left-panel">
+        <h3 class="panel-title">Quick Suggestions</h3>
+        <div class="content-wrapper">
+            <button class="quick-btn" onclick="quickAsk('I have a terrible headache.')"><i class="fas fa-brain"></i> Headache</button>
+            <button class="quick-btn" onclick="quickAsk('My throat is sore.')"><i class="fas fa-head-side-cough"></i> Sore Throat</button>
+            <button class="quick-btn" onclick="quickAsk('I have a high fever and chills.')"><i class="fas fa-thermometer-half"></i> High Fever</button>
+            <button class="quick-btn" onclick="quickAsk('Stomach pain and nausea.')"><i class="fas fa-procedures"></i> Stomach Pain</button>
+            <button class="quick-btn" onclick="quickAsk('My back hurts (Back pain).')"><i class="fas fa-crutch"></i> Back Pain</button>
+            <button class="quick-btn" onclick="quickAsk('I have a runny nose.')"><i class="fas fa-allergies"></i> Runny Nose</button>
+            <button class="quick-btn" onclick="quickAsk('I feel stressed and anxious.')"><i class="fas fa-cloud-rain"></i> Anxiety</button>
         </div>
     </div>
 
-    <div class="input-area">
-        <input type="text" id="user-input" placeholder="Type your symptoms here..." autocomplete="off" onkeypress="handleEnter(event)">
-        <button onclick="sendMessage()" id="send-btn"><i class="fas fa-paper-plane"></i></button>
+    <div class="chat-container">
+        <div class="header">
+            <div class="header-brand">
+                <img src="/assets/logo.png" alt="CureAI Logo" class="header-icon">
+                <div style="display: flex; flex-direction: column;">
+                    <h2>CureAI</h2>
+                    <p>Cure Yourself Now!</p>
+                </div>
+            </div>
+
+            <button id="clear-btn" onclick="clearChat()" title="Clear Chat">
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </div>
+
+        <div class="chat-box" id="chat-box">
+            <div class="message ai">
+                <i class="fas fa-robot" style="color: var(--primary-color); margin-right:5px;"></i>
+                Hello! I am <b>CureAI</b>. How can I help you today?
+            </div>
+        </div>
+
+        <div class="input-area">
+            <input type="text" id="user-input" placeholder="Type your symptoms here..." autocomplete="off" onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()" id="send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+
+        <div class="disclaimer">
+            ⚠️ CureAI is a student project. Not medical advice.
+        </div>
     </div>
 
-    <div class="disclaimer">
-        ⚠️ CureAI is a student project. It does not replace professional medical advice.
+    <div class="side-panel right-panel">
+        <h3 class="panel-title">Trusted Resources</h3>
+        <div class="content-wrapper">
+            <a href="https://www.cdc.gov/antibiotic-use/index.html" target="_blank" class="resource-card">
+                <div class="icon-box" style="background: #e8f4f8; color: #3498db;"><i class="fas fa-pills"></i></div>
+                <div class="text-box"><h4>Antibiotics Guide</h4><p>When to use them?</p></div>
+                <i class="fas fa-external-link-alt arrow"></i>
+            </a>
+            <a href="https://www.nhs.uk/conditions/common-cold/" target="_blank" class="resource-card">
+                <div class="icon-box" style="background: #e8f8f5; color: #27ae60;"><i class="fas fa-head-side-mask"></i></div>
+                <div class="text-box"><h4>Cold & Flu</h4><p>Treatments & Advice</p></div>
+                <i class="fas fa-external-link-alt arrow"></i>
+            </a>
+            <a href="https://www.mayoclinic.org/drugs-supplements" target="_blank" class="resource-card">
+                <div class="icon-box" style="background: #fff0f0; color: #e74c3c;"><i class="fas fa-prescription-bottle-alt"></i></div>
+                <div class="text-box"><h4>Drug Database</h4><p>Search Medications</p></div>
+                <i class="fas fa-external-link-alt arrow"></i>
+            </a>
+            <a href="https://www.titck.gov.tr/" target="_blank" class="resource-card">
+                <div class="icon-box" style="background: #fdf2e9; color: #d35400;"><i class="fas fa-flag"></i></div>
+                <div class="text-box"><h4>Turkish Health</h4><p>Official Regulations</p></div>
+                <i class="fas fa-external-link-alt arrow"></i>
+            </a>
+            <a href="https://www.who.int/health-topics" target="_blank" class="resource-card">
+                <div class="icon-box" style="background: #ebf5fb; color: #2980b9;"><i class="fas fa-globe-americas"></i></div>
+                <div class="text-box"><h4>WHO Topics</h4><p>Global Health A-Z</p></div>
+                <i class="fas fa-external-link-alt arrow"></i>
+            </a>
+            <div style="font-size: 11px; color: #aaa; text-align: center; line-height: 1.4;">
+                <i class="fas fa-check-circle"></i> Verified Sources Only.<br>Always consult a doctor.
+            </div>
+        </div>
     </div>
+
 </div>
 
 <script>
     async function sendMessage() {
         const inputField = document.getElementById("user-input");
-        const sendBtn = document.getElementById("send-btn");
         const message = inputField.value.trim();
-
         if (message === "") return;
-
-        // Add user message to UI
-        addMessage(message, "user");
+        
+        processMessage(message);
         inputField.value = "";
+    }
+
+    function quickAsk(text) { processMessage(text); }
+
+    async function processMessage(message) {
+        const inputField = document.getElementById("user-input");
+        const sendBtn = document.getElementById("send-btn");
+        addMessage(message, "user");
+        inputField.disabled = true; sendBtn.disabled = true;
         
-        // Disable input while loading
-        inputField.disabled = true;
-        sendBtn.disabled = true;
-        
-        // Show loading indicator
         const loadingId = addMessage('<i class="fas fa-circle-notch fa-spin"></i> Analyzing...', "ai", true);
 
         try {
-            // Send request to Flask Backend
             const response = await fetch('/ask', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: message })
             });
             const data = await response.json();
-            
-            // Remove loading message and show actual response
             document.getElementById(loadingId).remove();
             addMessage(data.response, "ai");
         } catch (error) {
             document.getElementById(loadingId).remove();
-            addMessage("Connection error. Please try again.", "ai");
+            addMessage("Connection error.", "ai");
         } finally {
-            // Re-enable input
-            inputField.disabled = false;
-            sendBtn.disabled = false;
-            inputField.focus();
+            inputField.disabled = false; sendBtn.disabled = false; inputField.focus();
         }
     }
 
@@ -232,31 +134,25 @@
         const div = document.createElement("div");
         div.classList.add("message", sender);
         if(isLoading) div.id = "loading-msg";
-
-        // Format AI response (Basic Markdown)
         if(sender === 'ai' && !isLoading) {
             text = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
             text = text.replace(/\* (.*?)/g, '<li>$1</li>');
         }
-        
         div.innerHTML = text;
         chatBox.appendChild(div);
         chatBox.scrollTop = chatBox.scrollHeight;
         return div.id;
     }
-
+    
     function clearChat() {
-        const chatBox = document.getElementById("chat-box");
-        chatBox.innerHTML = `
+        document.getElementById("chat-box").innerHTML = `
         <div class="message ai">
             <i class="fas fa-robot" style="color: var(--primary-color); margin-right:5px;"></i>
             Chat cleared. I am listening.
         </div>`;
     }
-
-    function handleEnter(event) {
-        if (event.key === "Enter") sendMessage();
-    }
+    
+    function handleEnter(event) { if (event.key === "Enter") sendMessage(); }
 </script>
 
 </body>
