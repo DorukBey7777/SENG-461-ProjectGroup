@@ -1,1 +1,1 @@
-if you read this that means i made it!
+AI based healthcare website. You can ask and get help about health issues.
