@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CureAI - Cure Yourself Now!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Color Palette */
+        :root {
+            --bg-color: #fcf8f2;
+            --primary-color: #d65a55;
+            --primary-hover: #c44d48;
+            --text-color: #5d4e46;
+            --chat-bg: #ffffff;
+            --ai-msg-bg: #f4eee8;
+            --border-color: #e8ded4;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        /* Main Chat Container */
+        .chat-container {
+            width: 400px;
+            height: 90vh; 
+            max-height: 980px; 
+            min-height: 500px;
+            background: var(--chat-bg);
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(214, 90, 85, 0.15);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid var(--border-color);
+        }
+
+        /* Header Section */
+        .header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 15px rgba(214, 90, 85, 0.2);
+            flex-shrink: 0;
+        }
+
+        /* --- LOGO DÜZENLEMESİ BURADA YAPILDI --- */
+        .header-icon {
+            width: 50px;
+            height: 50px;
+            /* Padding'in toplam boyutu 50px'in üzerine çıkarmasını engeller */
+            box-sizing: border-box; 
+            /* Resmin satır içi eleman gibi davranıp kaymasını önler */
+            display: block;
+            
+            object-fit: contain;
+            background-color: white;
+            border-radius: 50%;
+            padding: 3px; /* Beyaz çerçeve ile logo arasındaki boşluğu biraz artırdım */
+        }
+        /* --------------------------------------- */
+
+        .header h2 { margin: 0; font-size: 22px; font-weight: 700; }
+        .header p { margin: 2px 0 0 0; font-size: 13px; opacity: 0.9; font-style: italic; }
+
+        /* Chat Area */
+        .chat-box {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background-image: radial-gradient(var(--border-color) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+
+        /* Messages */
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 14px;
+            line-height: 1.5;
+            position: relative;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .ai { background-color: var(--ai-msg-bg); color: var(--text-color); align-self: flex-start; border-bottom-left-radius: 2px; }
+        .user { background-color: var(--primary-color); color: white; align-self: flex-end; border-bottom-right-radius: 2px; box-shadow: 0 3px 10px rgba(214, 90, 85, 0.2); }
+
+        /* Input Area */
+        .input-area {
+            padding: 15px;
+            background: var(--chat-bg);
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 2px solid var(--border-color);
+            border-radius: 25px;
+            outline: none;
+            transition: 0.3s;
+            color: var(--text-color);
+        }
+        input:focus { border-color: var(--primary-color); }
+
+        button {
+            width: 45px;
+            height: 45px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button:hover { background-color: var(--primary-hover); transform: scale(1.1); }
+        button:disabled { background-color: #ccc; cursor: not-allowed; }
+
+        /* Clear Button */
+        #clear-btn { background-color: transparent; color: #fff; width: 30px; opacity: 0.8; box-shadow: none; }
+        #clear-btn:hover { color: #fff; opacity: 1; background-color: rgba(255,255,255,0.2); }
+
+        /* Disclaimer Footer */
+        .disclaimer { font-size: 10px; color: #aaa; text-align: center; padding: 8px; background-color: #fafafa; flex-shrink: 0; }
+        
+        /* Markdown Styling */
+        .ai b { color: var(--primary-color); }
+        .ai ul { padding-left: 20px; margin: 5px 0; }
+    </style>
+</head>
+<body>
+
+<div class="chat-container">
+    <div class="header">
+        <img src="/assets/logo.png" alt="CureAI Logo" class="header-icon">
+        <div>
+            <h2>CureAI</h2>
+            <p>Cure Yourself Now!</p>
+        </div>
+        <button id="clear-btn" onclick="clearChat()" title="Clear Chat" style="margin-left: auto;">
+            <i class="fas fa-trash-alt"></i>
+        </button>
+    </div>
+
+    <div class="chat-box" id="chat-box">
+        <div class="message ai">
+            <i class="fas fa-robot" style="color: var(--primary-color); margin-right:5px;"></i>
+            Hello! I am <b>CureAI</b>. How can I help you today?
+        </div>
+    </div>
+
+    <div class="input-area">
+        <input type="text" id="user-input" placeholder="Type your symptoms here..." autocomplete="off" onkeypress="handleEnter(event)">
+        <button onclick="sendMessage()" id="send-btn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+
+    <div class="disclaimer">
+        ⚠️ CureAI is a student project. It does not replace professional medical advice.
+    </div>
+</div>
+
+<script>
+    async function sendMessage() {
+        const inputField = document.getElementById("user-input");
+        const sendBtn = document.getElementById("send-btn");
+        const message = inputField.value.trim();
+
+        if (message === "") return;
+
+        // Add user message to UI
+        addMessage(message, "user");
+        inputField.value = "";
+        
+        // Disable input while loading
+        inputField.disabled = true;
+        sendBtn.disabled = true;
+        
+        // Show loading indicator
+        const loadingId = addMessage('<i class="fas fa-circle-notch fa-spin"></i> Analyzing...', "ai", true);
+
+        try {
+            // Send request to Flask Backend
+            const response = await fetch('/ask', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ message: message })
+            });
+            const data = await response.json();
+            
+            // Remove loading message and show actual response
+            document.getElementById(loadingId).remove();
+            addMessage(data.response, "ai");
+        } catch (error) {
+            document.getElementById(loadingId).remove();
+            addMessage("Connection error. Please try again.", "ai");
+        } finally {
+            // Re-enable input
+            inputField.disabled = false;
+            sendBtn.disabled = false;
+            inputField.focus();
+        }
+    }
+
+    function addMessage(text, sender, isLoading = false) {
+        const chatBox = document.getElementById("chat-box");
+        const div = document.createElement("div");
+        div.classList.add("message", sender);
+        if(isLoading) div.id = "loading-msg";
+
+        // Format AI response (Basic Markdown)
+        if(sender === 'ai' && !isLoading) {
+            text = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+            text = text.replace(/\* (.*?)/g, '<li>$1</li>');
+        }
+        
+        div.innerHTML = text;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return div.id;
+    }
+
+    function clearChat() {
+        const chatBox = document.getElementById("chat-box");
+        chatBox.innerHTML = `
+        <div class="message ai">
+            <i class="fas fa-robot" style="color: var(--primary-color); margin-right:5px;"></i>
+            Chat cleared. I am listening.
+        </div>`;
+    }
+
+    function handleEnter(event) {
+        if (event.key === "Enter") sendMessage();
+    }
+</script>
+
+</body>
+</html>
