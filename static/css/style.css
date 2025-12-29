@@ -8,7 +8,6 @@
     --border-color: #e8ded4;
 }
 
-/* --- SENİN GÜNCELLEDİĞİN KISIM --- */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: var(--bg-color);
@@ -38,7 +37,6 @@ body::before {
     z-index: -1;
     pointer-events: none;
 }
-/* ---------------------------------- */
 
 .app-layout {
     display: flex;
@@ -68,7 +66,6 @@ body::before {
     flex-shrink: 0;
     height: 30px;
     line-height: 30px;
-    /* Başlıkların da arkadan ayrılması için hafif gölge (isteğe bağlı) */
     text-shadow: 0 2px 4px rgba(255, 255, 255, 0.8);
 }
 
@@ -85,7 +82,6 @@ body::before {
     gap: 5px;
 }
 
-/* GÜNCELLEME: Gölgeyi (box-shadow) artırdık */
 .quick-btn {
     width: 100%; 
     height: 50px; 
@@ -102,7 +98,6 @@ body::before {
     padding: 0 15px; 
     gap: 10px; 
     margin: 0; 
-    /* Daha belirgin, yumuşak gölge */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); 
 }
 
@@ -111,7 +106,6 @@ body::before {
     background-color: #fff0f0; 
     transform: translateX(5px); 
     color: var(--primary-color);
-    /* Hover olunca gölgeyi biraz daha güçlendir */
     box-shadow: 0 8px 20px rgba(214, 90, 85, 0.15); 
 }
 .quick-btn i { font-size: 18px; color: var(--primary-color); width: 25px; text-align: center; }
@@ -123,7 +117,6 @@ body::before {
     min-height: 500px;
     background: var(--chat-bg);
     border-radius: 25px;
-    /* Chat kutusunun gölgesi zaten iyiydi ama biraz daha derinlik verdik */
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
     display: flex;
     flex-direction: column;
@@ -194,7 +187,6 @@ button:disabled { background-color: #ccc; cursor: not-allowed; }
 
 .disclaimer { font-size: 10px; color: #aaa; text-align: center; padding: 8px; background-color: #fafafa; flex-shrink: 0; }
 
-/* GÜNCELLEME: Sağ paneldeki kartların da gölgesini artırdık */
 .resource-card { 
     display: flex; 
     align-items: center; 
@@ -204,7 +196,6 @@ button:disabled { background-color: #ccc; cursor: not-allowed; }
     padding: 12px; 
     text-decoration: none; 
     transition: transform 0.2s ease, box-shadow 0.2s; 
-    /* Kartlar için belirgin gölge */
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08); 
     height: 50px; 
     margin: 0; 
