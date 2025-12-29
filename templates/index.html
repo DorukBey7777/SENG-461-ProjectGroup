@@ -1,177 +1,208 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CureAI - Cure Yourself Now!</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="/static/css/style.css"> 
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
+
 <body>
 
-<div class="app-layout">
-    
-    <div class="side-panel left-panel">
-        <h3 class="panel-title">Quick Suggestions</h3>
-        <div class="content-wrapper">
-            <button class="quick-btn" onclick="quickAsk('I have a terrible headache.')"><i class="fas fa-brain"></i> Headache</button>
-            <button class="quick-btn" onclick="quickAsk('My throat is sore.')"><i class="fas fa-head-side-cough"></i> Sore Throat</button>
-            <button class="quick-btn" onclick="quickAsk('I have a high fever and chills.')"><i class="fas fa-thermometer-half"></i> High Fever</button>
-            <button class="quick-btn" onclick="quickAsk('Stomach pain and nausea.')"><i class="fas fa-procedures"></i> Stomach Pain</button>
-            <button class="quick-btn" onclick="quickAsk('My back hurts (Back pain).')"><i class="fas fa-crutch"></i> Back Pain</button>
-            <button class="quick-btn" onclick="quickAsk('I have a runny nose.')"><i class="fas fa-allergies"></i> Runny Nose</button>
-            <button class="quick-btn" onclick="quickAsk('I feel stressed and anxious.')"><i class="fas fa-cloud-rain"></i> Anxiety</button>
-        </div>
-    </div>
+    <div class="app-layout">
 
-    <div class="chat-container">
-        <div class="header">
-            <div class="header-brand">
-                <img src="/static/img/logo.png" alt="CureAI Logo" class="header-icon">
-                <div style="display: flex; flex-direction: column;">
-                    <h2>CureAI</h2>
-                    <p>Cure Yourself Now!</p>
+        <div class="side-panel left-panel">
+            <h3 class="panel-title">Quick Suggestions</h3>
+            <div class="content-wrapper">
+                <button class="quick-btn" onclick="quickAsk('I have a terrible headache.')"><i class="fas fa-brain"></i>
+                    Headache</button>
+                <button class="quick-btn" onclick="quickAsk('My throat is sore.')"><i
+                        class="fas fa-head-side-cough"></i> Sore Throat</button>
+                <button class="quick-btn" onclick="quickAsk('I have a high fever and chills.')"><i
+                        class="fas fa-thermometer-half"></i> High Fever</button>
+                <button class="quick-btn" onclick="quickAsk('Stomach pain and nausea.')"><i
+                        class="fas fa-procedures"></i> Stomach Pain</button>
+                <button class="quick-btn" onclick="quickAsk('My back hurts (Back pain).')"><i class="fas fa-crutch"></i>
+                    Back Pain</button>
+                <button class="quick-btn" onclick="quickAsk('I have a runny nose.')"><i class="fas fa-allergies"></i>
+                    Runny Nose</button>
+                <button class="quick-btn" onclick="quickAsk('I feel stressed and anxious.')"><i
+                        class="fas fa-cloud-rain"></i> Anxiety</button>
+            </div>
+        </div>
+
+        <div class="chat-container">
+            <div class="header">
+                <div class="header-brand">
+                    <img src="/static/img/logo.png" alt="CureAI Logo" class="header-icon">
+                    <div style="display: flex; flex-direction: column;">
+                        <h2>CureAI</h2>
+                        <p>Cure Yourself Now!</p>
+                    </div>
+                </div>
+
+                <button id="clear-btn" onclick="clearChat()" title="Clear Chat">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+            </div>
+
+            <div class="chat-box" id="chat-box">
+                <div class="message ai">
+                    <i class="fas fa-robot" style="color: var(--primary-color); margin-right:5px;"></i>
+                    Hello! I am <b>CureAI</b>. How can I help you today?
                 </div>
             </div>
 
-            <button id="clear-btn" onclick="clearChat()" title="Clear Chat">
-                <i class="fas fa-trash-alt"></i>
-            </button>
-        </div>
+            <div class="input-area">
+                <input type="text" id="user-input" placeholder="Type your symptoms here..." autocomplete="off"
+                    onkeypress="handleEnter(event)">
+                <button onclick="sendMessage()" id="send-btn"><i class="fas fa-paper-plane"></i></button>
+            </div>
 
-        <div class="chat-box" id="chat-box">
-            <div class="message ai">
-                <i class="fas fa-robot" style="color: var(--primary-color); margin-right:5px;"></i>
-                Hello! I am <b>CureAI</b>. How can I help you today?
+            <div class="disclaimer">
+                ⚠️ CureAI is a student project. Not medical advice.
             </div>
         </div>
 
-        <div class="input-area">
-            <input type="text" id="user-input" placeholder="Type your symptoms here..." autocomplete="off" onkeypress="handleEnter(event)">
-            <button onclick="sendMessage()" id="send-btn"><i class="fas fa-paper-plane"></i></button>
-        </div>
+        <div class="side-panel right-panel">
+            <h3 class="panel-title">Trusted Resources</h3>
+            <div class="content-wrapper">
+                <a href="https://www.cdc.gov/antibiotic-use/index.html" target="_blank" class="resource-card">
+                    <div class="icon-box" style="background: #e8f4f8; color: #3498db;"><i class="fas fa-pills"></i>
+                    </div>
+                    <div class="text-box">
+                        <h4>Antibiotics Guide</h4>
+                        <p>When to use them?</p>
+                    </div>
+                    <i class="fas fa-external-link-alt arrow"></i>
+                </a>
+                <a href="https://www.nhs.uk/conditions/common-cold/" target="_blank" class="resource-card">
+                    <div class="icon-box" style="background: #e8f8f5; color: #27ae60;"><i
+                            class="fas fa-head-side-mask"></i></div>
+                    <div class="text-box">
+                        <h4>Cold & Flu</h4>
+                        <p>Treatments & Advice</p>
+                    </div>
+                    <i class="fas fa-external-link-alt arrow"></i>
+                </a>
+                <a href="https://www.mayoclinic.org/drugs-supplements" target="_blank" class="resource-card">
+                    <div class="icon-box" style="background: #fff0f0; color: #e74c3c;"><i
+                            class="fas fa-prescription-bottle-alt"></i></div>
+                    <div class="text-box">
+                        <h4>Drug Database</h4>
+                        <p>Search Medications</p>
+                    </div>
+                    <i class="fas fa-external-link-alt arrow"></i>
+                </a>
 
-        <div class="disclaimer">
-            ⚠️ CureAI is a student project. Not medical advice.
-        </div>
-    </div>
+                <a href="https://www.google.com/maps/search/hospitals" target="_blank" class="resource-card">
+                    <div class="icon-box" style="background: #ffebee; color: #d32f2f;"><i class="fas fa-hospital"></i>
+                    </div>
+                    <div class="text-box">
+                        <h4>Hospitals</h4>
+                        <p>Find Nearby</p>
+                    </div>
+                    <i class="fas fa-map-marker-alt arrow"></i>
+                </a>
 
-    <div class="side-panel right-panel">
-        <h3 class="panel-title">Trusted Resources</h3>
-        <div class="content-wrapper">
-            <a href="https://www.cdc.gov/antibiotic-use/index.html" target="_blank" class="resource-card">
-                <div class="icon-box" style="background: #e8f4f8; color: #3498db;"><i class="fas fa-pills"></i></div>
-                <div class="text-box"><h4>Antibiotics Guide</h4><p>When to use them?</p></div>
-                <i class="fas fa-external-link-alt arrow"></i>
-            </a>
-            <a href="https://www.nhs.uk/conditions/common-cold/" target="_blank" class="resource-card">
-                <div class="icon-box" style="background: #e8f8f5; color: #27ae60;"><i class="fas fa-head-side-mask"></i></div>
-                <div class="text-box"><h4>Cold & Flu</h4><p>Treatments & Advice</p></div>
-                <i class="fas fa-external-link-alt arrow"></i>
-            </a>
-            <a href="https://www.mayoclinic.org/drugs-supplements" target="_blank" class="resource-card">
-                <div class="icon-box" style="background: #fff0f0; color: #e74c3c;"><i class="fas fa-prescription-bottle-alt"></i></div>
-                <div class="text-box"><h4>Drug Database</h4><p>Search Medications</p></div>
-                <i class="fas fa-external-link-alt arrow"></i>
-            </a>
+                <a href="https://www.google.com/maps/search/pharmacies" target="_blank" class="resource-card">
+                    <div class="icon-box" style="background: #e8f5e9; color: #2e7d32;"><i class="fas fa-first-aid"></i>
+                    </div>
+                    <div class="text-box">
+                        <h4>Pharmacies</h4>
+                        <p>Find Nearby</p>
+                    </div>
+                    <i class="fas fa-map-marker-alt arrow"></i>
+                </a>
 
-            <a href="https://www.google.com/maps/search/hospitals" target="_blank" class="resource-card">
-                <div class="icon-box" style="background: #ffebee; color: #d32f2f;"><i class="fas fa-hospital"></i></div>
-                <div class="text-box"><h4>Hospitals</h4><p>Find Nearby</p></div>
-                <i class="fas fa-map-marker-alt arrow"></i>
-            </a>
-
-            <a href="https://www.google.com/maps/search/pharmacies" target="_blank" class="resource-card">
-                <div class="icon-box" style="background: #e8f5e9; color: #2e7d32;"><i class="fas fa-first-aid"></i></div>
-                <div class="text-box"><h4>Pharmacies</h4><p>Find Nearby</p></div>
-                <i class="fas fa-map-marker-alt arrow"></i>
-            </a>
-
-            <div style="font-size: 11px; color: #aaa; text-align: center; line-height: 1.4;">
-                <i class="fas fa-check-circle"></i> Verified Sources Only.<br>Always consult a doctor.
+                <div style="font-size: 11px; color: #aaa; text-align: center; line-height: 1.4;">
+                    <i class="fas fa-check-circle"></i> Verified Sources Only.<br>Always consult a doctor.
+                </div>
             </div>
         </div>
+
     </div>
 
-</div>
+    <script>
 
-<script>
+        const SERVER_URL = "";
 
-    const SERVER_URL = "";
+        async function sendMessage() {
+            const inputField = document.getElementById("user-input");
+            const message = inputField.value.trim();
+            if (message === "") return;
 
-    async function sendMessage() {
-        const inputField = document.getElementById("user-input");
-        const message = inputField.value.trim();
-        if (message === "") return;
-        
-        processMessage(message);
-        inputField.value = "";
-    }
-
-    function quickAsk(text) { processMessage(text); }
-
-    async function processMessage(message) {
-        const inputField = document.getElementById("user-input");
-        const sendBtn = document.getElementById("send-btn");
-        addMessage(message, "user");
-        inputField.disabled = true; sendBtn.disabled = true;
-        
-        const loadingId = addMessage('<i class="fas fa-circle-notch fa-spin"></i> Analyzing...', "ai", true);
-
-        try {
-            const response = await fetch(`${SERVER_URL}/ask`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: message })
-            });
-            const data = await response.json();
-            document.getElementById(loadingId).remove();
-            addMessage(data.response, "ai");
-        } catch (error) {
-            console.error("Hata:", error);
-            document.getElementById(loadingId).remove();
-            addMessage("Connection error.", "ai");
-        } finally {
-            inputField.disabled = false; sendBtn.disabled = false; inputField.focus();
+            processMessage(message);
+            inputField.value = "";
         }
-    }
 
-    async function clearChat() {
-        document.getElementById("chat-box").innerHTML = `
+        function quickAsk(text) { processMessage(text); }
+
+        async function processMessage(message) {
+            const inputField = document.getElementById("user-input");
+            const sendBtn = document.getElementById("send-btn");
+            addMessage(message, "user");
+            inputField.disabled = true; sendBtn.disabled = true;
+
+            const loadingId = addMessage('<i class="fas fa-circle-notch fa-spin"></i> Analyzing...', "ai", true);
+
+            try {
+                const response = await fetch(`${SERVER_URL}/ask`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: message })
+                });
+                const data = await response.json();
+                document.getElementById(loadingId).remove();
+                addMessage(data.response, "ai");
+            } catch (error) {
+                console.error("Hata:", error);
+                document.getElementById(loadingId).remove();
+                addMessage("Connection error.", "ai");
+            } finally {
+                inputField.disabled = false; sendBtn.disabled = false; inputField.focus();
+            }
+        }
+
+        async function clearChat() {
+            document.getElementById("chat-box").innerHTML = `
         <div class="message ai">
             <i class="fas fa-robot" style="color: var(--primary-color); margin-right:5px;"></i>
             Chat cleared. Memory reset. I am listening.
         </div>`;
 
-        try {
-            console.log("Reset isteği gönderiliyor...");
-            await fetch(`${SERVER_URL}/reset`, {
-                method: 'POST'
-            });
-            console.log("Sunucu hafızası sıfırlandı.");
-        } catch (error) {
-            console.error("Resetleme başarısız:", error);
-            alert("Hata: Sunucu hafızası temizlenemedi. Bağlantıyı kontrol edin.");
+            try {
+                console.log("Reset isteği gönderiliyor...");
+                await fetch(`${SERVER_URL}/reset`, {
+                    method: 'POST'
+                });
+                console.log("Sunucu hafızası sıfırlandı.");
+            } catch (error) {
+                console.error("Resetleme başarısız:", error);
+                alert("Hata: Sunucu hafızası temizlenemedi. Bağlantıyı kontrol edin.");
+            }
         }
-    }
 
-    function addMessage(text, sender, isLoading = false) {
-        const chatBox = document.getElementById("chat-box");
-        const div = document.createElement("div");
-        div.classList.add("message", sender);
-        if(isLoading) div.id = "loading-msg";
-        if(sender === 'ai' && !isLoading) {
-            text = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
-            text = text.replace(/\* (.*?)/g, '<li>$1</li>');
+        function addMessage(text, sender, isLoading = false) {
+            const chatBox = document.getElementById("chat-box");
+            const div = document.createElement("div");
+            div.classList.add("message", sender);
+            if (isLoading) div.id = "loading-msg";
+            if (sender === 'ai' && !isLoading) {
+                text = text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+                text = text.replace(/\* (.*?)/g, '<li>$1</li>');
+            }
+            div.innerHTML = text;
+            chatBox.appendChild(div);
+            chatBox.scrollTop = chatBox.scrollHeight;
+            return div.id;
         }
-        div.innerHTML = text;
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
-        return div.id;
-    }
-    
-    function handleEnter(event) { if (event.key === "Enter") sendMessage(); }
-</script>
+
+        function handleEnter(event) { if (event.key === "Enter") sendMessage(); }
+    </script>
 
 </body>
+
 </html>
