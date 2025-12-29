@@ -4,12 +4,10 @@ import os
 import re
 from dotenv import load_dotenv
 
-# .env dosyasını yükle
 load_dotenv()
 
 app = Flask(__name__)
 
-# --- MANUEL CORS AYARI ---
 @app.after_request
 def after_request(response):
     response.headers.add('Access-Control-Allow-Origin', '*')
@@ -17,14 +15,12 @@ def after_request(response):
     response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
     return response
 
-# --- GEMINI AYARLARI ---
 API_KEY = os.getenv("GOOGLE_API_KEY")
 if not API_KEY:
     print("KRİTİK HATA: API anahtarı bulunamadı!")
 
 genai.configure(api_key=API_KEY, transport='rest')
 
-# Modeli seçiyoruz
 model_name = "gemini-2.5-flash" 
 try:
     model = genai.GenerativeModel(model_name)
@@ -32,7 +28,6 @@ except Exception as e:
     print(f"Model hata verdi, Pro modeline geçiliyor: {e}")
     model = genai.GenerativeModel("gemini-2.5-flash")
 
-# --- SİSTEM TALİMATI ---
 system_prompt = """
 You are 'CureAI', an advanced medical assistant prototype.
 Your Goal: Suggest COMPREHENSIVE medical treatments (Rx & OTC) and lifestyle advice.
@@ -65,7 +60,6 @@ Rules:
      * Provide BOTH links clearly separated.
 """
 
-# --- HAFIZA YÖNETİMİ (GLOBAL) ---
 chat_session = None
 
 def init_chat():
@@ -77,17 +71,14 @@ def init_chat():
         {"role": "model", "parts": ["Understood. Prototype mode active."]}
     ])
 
-# Uygulama ilk açıldığında hafızayı başlat
 init_chat()
 
 @app.route('/')
 def home():
     return render_template('index.html')
 
-# --- RESET ROTASI (ÖNEMLİ) ---
 @app.route('/reset', methods=['POST'])
 def reset_chat():
-    # Bu fonksiyon çağrıldığında hafızayı silip yeniden kurar
     init_chat()
     return jsonify({'status': 'success', 'message': 'Memory cleared.'})
 
@@ -99,11 +90,9 @@ def ask():
         return jsonify({'response': 'Please write something.'})
 
     try:
-        # Global session kullanılıyor
         response = chat_session.send_message(user_message)
         ai_response = response.text
         
-        # HTML Formatlama
         ai_response = re.sub(r'\*\*(.*?)\*\*', r'<b>\1</b>', ai_response)
         ai_response = ai_response.replace("* ", "<br>• ")
         ai_response = ai_response.replace("\n", "<br>")
