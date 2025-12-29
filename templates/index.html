@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CureAI - Cure Yourself Now!</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="/assets/css/style.css">
+    <link rel="stylesheet" href="/static/css/style.css"> 
 </head>
 <body>
 
@@ -27,7 +27,7 @@
     <div class="chat-container">
         <div class="header">
             <div class="header-brand">
-                <img src="/assets/logo.png" alt="CureAI Logo" class="header-icon">
+                <img src="/static/img/logo.png" alt="CureAI Logo" class="header-icon">
                 <div style="display: flex; flex-direction: column;">
                     <h2>CureAI</h2>
                     <p>Cure Yourself Now!</p>
@@ -74,16 +74,19 @@
                 <div class="text-box"><h4>Drug Database</h4><p>Search Medications</p></div>
                 <i class="fas fa-external-link-alt arrow"></i>
             </a>
-            <a href="https://www.titck.gov.tr/" target="_blank" class="resource-card">
-                <div class="icon-box" style="background: #fdf2e9; color: #d35400;"><i class="fas fa-flag"></i></div>
-                <div class="text-box"><h4>Turkish Health</h4><p>Official Regulations</p></div>
-                <i class="fas fa-external-link-alt arrow"></i>
+
+            <a href="https://www.google.com/maps/search/hospitals" target="_blank" class="resource-card">
+                <div class="icon-box" style="background: #ffebee; color: #d32f2f;"><i class="fas fa-hospital"></i></div>
+                <div class="text-box"><h4>Hospitals</h4><p>Find Nearby</p></div>
+                <i class="fas fa-map-marker-alt arrow"></i>
             </a>
-            <a href="https://www.who.int/health-topics" target="_blank" class="resource-card">
-                <div class="icon-box" style="background: #ebf5fb; color: #2980b9;"><i class="fas fa-globe-americas"></i></div>
-                <div class="text-box"><h4>WHO Topics</h4><p>Global Health A-Z</p></div>
-                <i class="fas fa-external-link-alt arrow"></i>
+
+            <a href="https://www.google.com/maps/search/pharmacies" target="_blank" class="resource-card">
+                <div class="icon-box" style="background: #e8f5e9; color: #2e7d32;"><i class="fas fa-first-aid"></i></div>
+                <div class="text-box"><h4>Pharmacies</h4><p>Find Nearby</p></div>
+                <i class="fas fa-map-marker-alt arrow"></i>
             </a>
+
             <div style="font-size: 11px; color: #aaa; text-align: center; line-height: 1.4;">
                 <i class="fas fa-check-circle"></i> Verified Sources Only.<br>Always consult a doctor.
             </div>
@@ -93,6 +96,9 @@
 </div>
 
 <script>
+
+    const SERVER_URL = "";
+
     async function sendMessage() {
         const inputField = document.getElementById("user-input");
         const message = inputField.value.trim();
@@ -113,7 +119,7 @@
         const loadingId = addMessage('<i class="fas fa-circle-notch fa-spin"></i> Analyzing...', "ai", true);
 
         try {
-            const response = await fetch('/ask', {
+            const response = await fetch(`${SERVER_URL}/ask`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ message: message })
@@ -122,10 +128,30 @@
             document.getElementById(loadingId).remove();
             addMessage(data.response, "ai");
         } catch (error) {
+            console.error("Hata:", error);
             document.getElementById(loadingId).remove();
             addMessage("Connection error.", "ai");
         } finally {
             inputField.disabled = false; sendBtn.disabled = false; inputField.focus();
+        }
+    }
+
+    async function clearChat() {
+        document.getElementById("chat-box").innerHTML = `
+        <div class="message ai">
+            <i class="fas fa-robot" style="color: var(--primary-color); margin-right:5px;"></i>
+            Chat cleared. Memory reset. I am listening.
+        </div>`;
+
+        try {
+            console.log("Reset isteği gönderiliyor...");
+            await fetch(`${SERVER_URL}/reset`, {
+                method: 'POST'
+            });
+            console.log("Sunucu hafızası sıfırlandı.");
+        } catch (error) {
+            console.error("Resetleme başarısız:", error);
+            alert("Hata: Sunucu hafızası temizlenemedi. Bağlantıyı kontrol edin.");
         }
     }
 
@@ -142,14 +168,6 @@
         chatBox.appendChild(div);
         chatBox.scrollTop = chatBox.scrollHeight;
         return div.id;
-    }
-    
-    function clearChat() {
-        document.getElementById("chat-box").innerHTML = `
-        <div class="message ai">
-            <i class="fas fa-robot" style="color: var(--primary-color); margin-right:5px;"></i>
-            Chat cleared. I am listening.
-        </div>`;
     }
     
     function handleEnter(event) { if (event.key === "Enter") sendMessage(); }
