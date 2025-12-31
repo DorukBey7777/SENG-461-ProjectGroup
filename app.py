@@ -17,7 +17,7 @@ def after_request(response):
 
 API_KEY = os.getenv("GOOGLE_API_KEY")
 if not API_KEY:
-    print("KRİTİK HATA: API anahtarı bulunamadı!")
+    print("CRITICAL ERROR: API NOT FOUND!")
 
 genai.configure(api_key=API_KEY, transport='rest')
 
@@ -25,7 +25,7 @@ model_name = "gemini-2.5-flash"
 try:
     model = genai.GenerativeModel(model_name)
 except Exception as e:
-    print(f"Model hata verdi, Pro modeline geçiliyor: {e}")
+    print(f"Model error, turn to Pro: {e}")
     model = genai.GenerativeModel("gemini-2.5-flash")
 
 system_prompt = """
@@ -63,9 +63,9 @@ Rules:
 chat_session = None
 
 def init_chat():
-    """Sohbet hafızasını sıfırlayan yardımcı fonksiyon"""
+    """Chat Memory Reset Part"""
     global chat_session
-    print("--- SİSTEM: HAFIZA SIFIRLANDI / BAŞLATILDI ---")
+    print("--- SYSTEM MEMORY STOP-START ---")
     chat_session = model.start_chat(history=[
         {"role": "user", "parts": [system_prompt]},
         {"role": "model", "parts": ["Understood. Prototype mode active."]}
